@@ -9,7 +9,7 @@ const FILES = {
   cert_deloitte: process.env.CERT_DELOITTE_ID
 }
 
-console.log('ENV CHECK:', FILES)
+
 
 // Stream file from Drive through your server
 router.get('/preview/:key', async (req, res) => {

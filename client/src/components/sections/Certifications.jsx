@@ -8,10 +8,6 @@ export default function Certifications() {
   const [selected, setSelected] = useState(null)
   const [loaded, setLoaded] = useState(false)
 
-const getPreviewUrl = (fileKey) => `/api/files/preview/${fileKey}`
-const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
-
-
   const openCert = (cert) => {
     setLoaded(false)
     setSelected(cert)
@@ -27,7 +23,7 @@ const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
       <div className="text-center mb-14">
         <p className="text-indigo-400 text-sm tracking-widest uppercase mb-3">Credentials</p>
         <h2 className="text-4xl font-bold text-white">Certifications</h2>
-        <p className="text-slate-500 text-sm mt-3">Click any certificate to view it</p>
+        <p className="text-slate-500 text-sm mt-3">Hover to preview — click to view full certificate</p>
       </div>
 
       {/* Cards Grid */}
@@ -42,34 +38,28 @@ const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
             onClick={() => openCert(cert)}
             className="glass rounded-2xl overflow-hidden border border-white/8 group cursor-pointer hover:border-indigo-500/30 transition-all duration-300"
           >
-            {/* Hover Preview Area */}
+            {/* Preview Area */}
             <div className="relative h-40 overflow-hidden bg-[#0d0d15]">
 
-              {/* Certificate iframe preview — loads in background */}
+              {/* iframe preview */}
               <iframe
-                src={getPreviewUrl(cert.fileId)}
+                src={cert.previewUrl}
                 className="w-full h-full pointer-events-none"
-                style={{
-                  border: 'none',
-                  transform: 'scale(1.05)',
-                  transformOrigin: 'top left',
-                  width: '111%',
-                  height: '111%'
-                }}
+                style={{ border: 'none' }}
                 title={cert.title}
               />
 
-              {/* Dark overlay — lifts on hover to reveal preview */}
-              <div className="absolute inset-0 bg-[#0a0a0f]/85 group-hover:bg-[#0a0a0f]/20 transition-all duration-500" />
+              {/* Dark overlay lifts on hover */}
+              <div className="absolute inset-0 bg-[#0a0a0f]/80 group-hover:bg-[#0a0a0f]/10 transition-all duration-500" />
 
-              {/* Default state — icon visible when not hovered */}
+              {/* Default icon */}
               <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300">
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cert.color} flex items-center justify-center shadow-lg`}>
                   <Award size={26} className="text-white" />
                 </div>
               </div>
 
-              {/* Hover state — click to view prompt */}
+              {/* Hover prompt */}
               <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center mb-2">
                   <ZoomIn size={18} className="text-white" />
@@ -109,7 +99,7 @@ const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
               initial={{ scale: 0.85, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.85, opacity: 0, y: 20 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.25 }}
               className="w-full max-w-4xl glass rounded-2xl overflow-hidden border border-white/10"
               style={{ height: '85vh' }}
             >
@@ -124,12 +114,12 @@ const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
                     <p className="text-slate-500 text-xs">{selected.issuer} · {selected.year}</p>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-2">
                   <a
-                    href={getViewUrl(selected.fileId)}
+                    href={selected.viewUrl}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs hover:bg-indigo-500/20 transition-all"
                   >
                     <ExternalLink size={12} />
@@ -144,21 +134,26 @@ const getViewUrl = (fileKey) => `/api/files/view/${fileKey}`
                 </div>
               </div>
 
-              {/* Loading spinner */}
+              {/* Loading */}
               {!loaded && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#0a0a0f] z-10"
-                  style={{ top: '56px' }}>
+                <div
+                  className="flex flex-col items-center justify-center gap-3 bg-[#0a0a0f]"
+                  style={{ height: 'calc(85vh - 56px)' }}
+                >
                   <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
                   <p className="text-slate-500 text-sm">Loading certificate...</p>
                 </div>
               )}
 
-              {/* Certificate iframe */}
+              {/* iframe */}
               <iframe
-                src={getPreviewUrl(selected.fileId)}
+                src={selected.previewUrl}
                 onLoad={() => setLoaded(true)}
                 className="w-full"
-                style={{ height: 'calc(85vh - 56px)', border: 'none' }}
+                style={{
+                  height: loaded ? 'calc(85vh - 56px)' : '0px',
+                  border: 'none'
+                }}
                 title={selected.title}
                 allow="autoplay"
               />
