@@ -10,8 +10,8 @@ export default function Projects() {
   const [hovered, setHovered] = useState(null)
 
   const filtered = activeCategory === 'All'
-    ? projects
-    : projects.filter(p => p.category === activeCategory)
+  ? projects
+  : projects.filter(p => p.category.includes(activeCategory))
 
   const openGithub = (url) => {
     if (url) window.open(url, '_blank')
@@ -74,7 +74,7 @@ export default function Projects() {
                 {/* Category badge */}
                 <div className="absolute top-4 left-4">
                   <span className="text-xs px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-indigo-300">
-                    {project.category}
+                    {project.category.join(' • ')}
                   </span>
                 </div>
 
