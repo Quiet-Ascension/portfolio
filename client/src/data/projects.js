@@ -4,7 +4,7 @@ export const projects = [
     title: 'AWS Security Monitoring System',
     description: 'A cloud security monitoring solution using AWS CloudTrail, CloudWatch, and SNS to detect and alert on suspicious activity in real time. Tracks API calls, monitors resource changes, and sends instant notifications on policy violations.',
     preview: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=600&q=80',
-    category: 'Cloud',
+    category: ['Cloud' ,'Cybersecurity'],
     tags: ['AWS', 'CloudTrail', 'CloudWatch', 'SNS', 'IAM'],
     github: 'https://github.com/Quiet-Ascension/aws-security-monitoring-system',
     demo: null,
