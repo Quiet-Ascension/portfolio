@@ -12,7 +12,7 @@ export default function Footer() {
             className="text-slate-500 hover:text-white transition-colors">
             <FaGithub size={18} />
           </a>
-          <a href="https://linkedin.com/in/manavshailesh" target="_blank" rel="noreferrer"
+          <a href="https://www.linkedin.com/in/manav-shailesh/" target="_blank" rel="noreferrer"
             className="text-slate-500 hover:text-white transition-colors">
             <FaLinkedin size={18} />
           </a>
